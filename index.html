@@ -290,8 +290,11 @@
     table.cmp { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .cmp th, .cmp td { min-width: 118px; }
     .chapter-head { flex-wrap: wrap; gap: 10px; }
-    .recipe { grid-template-columns: 1fr; }
-    .recipe-no { font-size: 30px; margin-bottom: 6px; }
+    /* セレクタ強度を本体(article.recipe)に合わせないと1列化が効かない */
+    article.recipe { grid-template-columns: 1fr; gap: 0; padding: 32px 0 36px; }
+    .recipe-no { font-size: 28px; margin-bottom: 8px; }
+    .recipe h3 { font-size: 19px; display: block; margin: 0 0 8px; }
+    .badges { margin-bottom: 4px; }
     .recipe-grid { grid-template-columns: 1fr; }
     .azulejo { height: 130px; }
   }
