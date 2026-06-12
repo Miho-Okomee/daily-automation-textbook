@@ -273,12 +273,27 @@
 
   @media (max-width: 960px) {
     .wrap { grid-template-columns: 1fr; }
-    nav.sidebar { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
-    main { padding: 0 22px 80px; }
+    /* 目次は普段は隠し、ボタンで全画面ドロワーとして表示 */
+    nav.sidebar {
+      position: fixed; inset: 0; z-index: 1000;
+      height: 100vh; height: 100dvh;
+      background: var(--paper); border-right: 0;
+      padding: 64px 24px 48px;
+    }
+    main { padding: 0 18px 80px; }
+    header.hero { padding: 68px 0 40px; }
+    .hero h1 { font-size: 31px; }
+    .hero .lede { font-size: 14px; }
     .tools3 { grid-template-columns: 1fr; }
+    .flow-a { grid-template-columns: 1fr; gap: 2px 0; padding-left: 14px; }
+    /* 比較表は潰さず横スクロールで読ませる */
+    table.cmp { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .cmp th, .cmp td { min-width: 118px; }
+    .chapter-head { flex-wrap: wrap; gap: 10px; }
     .recipe { grid-template-columns: 1fr; }
     .recipe-no { font-size: 30px; margin-bottom: 6px; }
     .recipe-grid { grid-template-columns: 1fr; }
+    .azulejo { height: 130px; }
   }
   @media print {
     body::before, .copy-btn { display: none; }
@@ -1632,6 +1647,17 @@
     const hidden = document.body.classList.toggle("no-sidebar");
     toggleBtn.textContent = hidden ? "☰ 目次を表示" : "◀ 目次を隠す";
   });
+
+  // スマホでは目次を初期非表示にし、目次内のリンクを選んだら自動で閉じる
+  const mobileMq = window.matchMedia("(max-width: 960px)");
+  const closeSidebarOnMobile = () => {
+    if (mobileMq.matches) {
+      document.body.classList.add("no-sidebar");
+      toggleBtn.textContent = "☰ 目次を表示";
+    }
+  };
+  closeSidebarOnMobile();
+  document.querySelectorAll(".toc-group a").forEach(a => a.addEventListener("click", closeSidebarOnMobile));
 
   // プロンプトのコピーボタン
   document.querySelectorAll(".copy-btn").forEach(btn => {
